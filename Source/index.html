@@ -1,0 +1,96 @@
+<html lang="en" ng-app="StarterApp">
+
+<head>
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="css/bootstrap.min.css"/>
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <meta name="viewport" content="initial-scale=1" />
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+</head>
+
+<body layout="column" ng-controller="AppCtrl">
+  <md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+      <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+        <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
+      </md-button>
+      <h1>Resume Builder 0.1</h1>
+    </div>
+  </md-toolbar>
+  <div layout="row" flex>
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+
+
+
+      <md-list>
+        <md-subheader class="md-no-sticky">Document Type</md-subheader>
+        <md-list-item ng-repeat="doctype in doctypes" ng-click="updateSelection($index, doctypes)">
+          <p> {{ doctype.name }} </p>
+          <md-checkbox class="md-secondary" ng-model="doctype.checked" ></md-checkbox>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">General Company Info</md-subheader>
+        <md-content layout-padding layout="column" layout-sm="column">
+          <md-input-container>
+            <label>Name</label>
+            <input ng-model="company.name">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Address</label>
+            <input ng-model="company.address">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Job Title</label>
+            <input ng-model="company.jobtitle">
+          </md-input-container>
+        </md-content>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">Clickable Items with Secondary Controls</md-subheader>
+        <md-list-item ng-click="navigateTo(setting.extraScreen, $event)" ng-repeat="setting in settings">
+          <md-icon md-svg-icon="{{setting.icon}}"></md-icon>
+          <p> {{ setting.name }} </p>
+        </md-list-item>
+    </md-sidenav>
+
+    <div layout="column" flex id="content">
+      <md-content layout="column" flex class="md-padding">
+        <div>
+          <!--<p>Your models data</p>
+      <p style="height:80px; width:100%; border: 1px solid #ddd">
+        {{data.text}}
+      </p> -->
+          <wysiwyg textarea-id="question" textarea-class="form-control" textarea-height="500px" textarea-name="textareaQuestion" textarea-required
+          ng-model="data.text" enable-bootstrap-title="true" textarea-menu="menu" disabled="disabled">
+          </wysiwyg>
+          <!--<button ng-click="setDisabled()">Disable</button>-->
+
+
+
+        </div>
+
+
+      </md-content>
+    </div>
+  </div>
+
+  <!-- Angular Material Dependencies -->
+  <script data-require="jquery@*" data-semver="2.0.3" src="js/jquery-2.0.3.min.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+  <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+  <script src="bower_components/angular-material/angular-material.min.js"></script>
+  <script data-require="bootstrap@*" data-semver="3.1.1" src="js/bootstrap.min.js"></script>
+  <script src="bower_components/angular-wysiwyg/src/angular-wysiwyg.js"></script>
+  <script src="js/bootstrap-colorpicker-module.js"></script>
+  <script src="bower_components/x2js/xml2json.min.js"></script>
+  <script src="bower_components/angular-xml/angular-xml.min.js"></script>
+  <!-- Load main Script File !-->
+  <script src="js/main.js"></script>
+</body>
+
+</html>
