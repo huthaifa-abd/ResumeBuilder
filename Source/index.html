@@ -3,7 +3,7 @@
 <head>
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
   <link rel="stylesheet" href="css/fonts.css">
-  <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="css/bootstrap.min.css"/>
+  <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="css/bootstrap.min.css" />
   <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <meta name="viewport" content="initial-scale=1" />
@@ -29,32 +29,33 @@
         <md-subheader class="md-no-sticky">Document Type</md-subheader>
         <md-list-item ng-repeat="doctype in doctypes" ng-click="updateSelection($index, doctypes)">
           <p> {{ doctype.name }} </p>
-          <md-checkbox class="md-secondary" ng-model="doctype.checked" ></md-checkbox>
+          <md-checkbox class="md-secondary" ng-model="doctype.checked"></md-checkbox>
         </md-list-item>
-        <md-divider></md-divider>
-        <md-subheader class="md-no-sticky">General Company Info</md-subheader>
-        <md-content layout-padding layout="column" layout-sm="column">
-          <md-input-container>
-            <label>Name</label>
-            <input ng-model="company.name">
-          </md-input-container>
+      </md-list>
+      <md-divider></md-divider>
+      <md-subheader class="md-no-sticky">General Company Info</md-subheader>
+      <md-content layout-padding layout="column" layout-sm="column">
+        <md-input-container>
+          <label>Name</label>
+          <input ng-model="company.name" ng-model-options="{updateOn: 'blur'}" ng-change='UpdateInformation()'>
+        </md-input-container>
 
-          <md-input-container>
-            <label>Address</label>
-            <input ng-model="company.address">
-          </md-input-container>
+        <md-input-container>
+          <label>Address</label>
+          <input ng-model="company.address" ng-model-options="{updateOn: 'blur'}" ng-change='UpdateInformation()'>
+        </md-input-container>
 
-          <md-input-container>
-            <label>Job Title</label>
-            <input ng-model="company.jobtitle">
-          </md-input-container>
-        </md-content>
-        <md-divider></md-divider>
-        <md-subheader class="md-no-sticky">Clickable Items with Secondary Controls</md-subheader>
-        <md-list-item ng-click="navigateTo(setting.extraScreen, $event)" ng-repeat="setting in settings">
-          <md-icon md-svg-icon="{{setting.icon}}"></md-icon>
-          <p> {{ setting.name }} </p>
-        </md-list-item>
+        <md-input-container>
+          <label>Job Title</label>
+          <input ng-model="company.jobtitle" ng-model-options="{updateOn: 'blur'}" ng-change='UpdateInformation()'>
+        </md-input-container>
+      </md-content>
+      <md-divider></md-divider>
+      <md-subheader class="md-no-sticky">Clickable Items with Secondary Controls</md-subheader>
+      <md-list-item ng-click="navigateTo(setting.extraScreen, $event)" ng-repeat="setting in settings">
+        <md-icon md-svg-icon="{{setting.icon}}"></md-icon>
+        <p> {{ setting.name }} </p>
+      </md-list-item>
     </md-sidenav>
 
     <div layout="column" flex id="content">
@@ -72,6 +73,21 @@
 
 
         </div>
+
+
+
+
+
+
+        <div ng-if="status">
+          <br/>
+          <b layout="row" layout-align="center center" class="md-padding">
+      {{status}}
+    </b>
+        </div>
+
+
+
 
 
       </md-content>

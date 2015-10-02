@@ -1,0 +1,58 @@
+<md-dialog aria-label="Customize Summary Dialog" ng-cloak ng-controller="AppCtrl">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Customize Summary Dialog</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; " class="tabsdemoDynamicHeight">
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Templates">
+          <md-content class="md-padding">
+            <p>Use standard templates to quickly tailor your custom summary using predefined information.</p>
+
+            <md-list>
+              <md-subheader class="md-no-sticky">Strandard Template List</md-subheader>
+              <md-list-item ng-repeat="Template in summaryTemplates" ng-click="UpdateSelectedSummartTemplate($index,summaryTemplates)">
+                <p> {{ Template.name }} </p>
+                <md-checkbox class="md-secondary" ng-model="Template.checked" ></md-checkbox>
+              </md-list-item>
+            </md-list>
+
+          </md-content>
+        </md-tab>
+        <md-tab label="Custom List">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Custom List</h1>
+            <p>This feature will be available in the Upcoming version release.</p>
+          </md-content>
+        </md-tab>
+        <md-tab label="Extra Items">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Extra Items</h1>
+            <p>This feature will be available in the Upcoming version release.</p>
+          </md-content>
+        </md-tab>
+      </md-tabs>
+      <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="answer('useful')" style="margin-right:20px;">
+          Save Changes
+        </md-button>
+        <md-button ng-click="answer('not useful')">
+         Cancel
+        </md-button>
+        
+      </div>
+  </form>
+  </div>
+
+
+
+  </md-dialog-content>
+
+</md-dialog>
