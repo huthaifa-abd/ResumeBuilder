@@ -27,9 +27,9 @@
 
       <md-list>
         <md-subheader class="md-no-sticky">Document Type</md-subheader>
-        <md-list-item ng-repeat="doctype in doctypes" ng-click="updateSelection($index, doctypes)">
+        <md-list-item ng-repeat="doctype in doctypes" >
           <p> {{ doctype.name }} </p>
-          <md-checkbox class="md-secondary" ng-model="doctype.checked"></md-checkbox>
+          <md-checkbox class="md-secondary" ng-model="doctype.checked" ng-change="updateSelection($index, doctypes)"></md-checkbox>
         </md-list-item>
       </md-list>
       <md-divider></md-divider>
@@ -51,7 +51,7 @@
         </md-input-container>
       </md-content>
       <md-divider></md-divider>
-      <md-subheader class="md-no-sticky">Clickable Items with Secondary Controls</md-subheader>
+      <md-subheader class="md-no-sticky">Advanced Customization Controls</md-subheader>
       <md-list-item ng-click="navigateTo(setting.extraScreen, $event)" ng-repeat="setting in settings">
         <md-icon md-svg-icon="{{setting.icon}}"></md-icon>
         <p> {{ setting.name }} </p>

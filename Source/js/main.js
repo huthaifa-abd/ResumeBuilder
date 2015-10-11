@@ -6,12 +6,18 @@ app.config(function ($mdIconProvider) {
     .iconSet('device', 'img/icons/sets/device-icons.svg', 24)
     .iconSet('communication', 'img/icons/sets/communication-icons.svg', 24)
     .defaultIconSet('img/icons/sets/core-icons.svg', 24);
-})
+});
 
-app.controller('AppCtrl', function ($scope, $http, $mdSidenav, $mdDialog) {
-  var templateFile = '';
+app.factory('Service', function() {
+  var Service = {
+    tempSummary: '',
+    tempProjects: ''
+  };
+  return Service;
+});
 
-
+app.controller('AppCtrl2', function ($scope, $http, $mdSidenav, $mdDialog,Service) {
+  console.log('Controller 02');
   angular.element(document).ready(function () {
     //Load Tempaltes
     //Load Summary Templates
@@ -23,19 +29,26 @@ app.controller('AppCtrl', function ($scope, $http, $mdSidenav, $mdDialog) {
     });
 
   });
-
-$scope.UpdateSelectedSummartTemplate = function (position ,summaryTemplates)
-{
-   angular.forEach(summaryTemplates, function (template, index) {
+  
+  
+  $scope.UpdateSelectedSummartTemplate = function (position, summaryTemplates) {
+    angular.forEach(summaryTemplates, function (template, index) {
       if (position != index) {
         template.checked = false;
       }
-      else
-      {
-         template.checked = true;
+      else {
+        template.checked = true;
+        Service.tempSummary = summaryTemplates[index].data;
       }
-   });
-}
+    });
+  }
+  
+  
+});
+app.controller('AppCtrl', function ($scope, $http, $mdSidenav, $mdDialog,Service) {
+  var templateFile = '';
+console.log('ReloadData');
+  
 
 
   $scope.toggleSidenav = function (menuId) {
@@ -45,7 +58,38 @@ $scope.UpdateSelectedSummartTemplate = function (position ,summaryTemplates)
   $scope.showAdvanced = function (ev) {
     $mdDialog.show({
       controller: DialogController,
-      templateUrl: 'customizesummary.tmpl.html',
+      templateUrl: 'customizesummary.tmpl.html?d=1',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    })
+      .then(function (answer) {
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function () {
+        $scope.status = 'You cancelled the dialog.';
+      });
+  };
+
+  $scope.showCustomizeSummaryControls = function (ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'customizesummary.tmpl.html?d=1',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    })
+      .then(function (answer) {
+        $scope.UpdateInformation('SummaryData',Service.tempSummary);
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function () {
+        $scope.status = 'You cancelled the dialog.';
+      });
+  };
+
+  $scope.showCustomizeProjectsControls = function (ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'customizeprojects.tmpl.html?d=1',
       parent: angular.element(document.body),
       targetEvent: ev,
       clickOutsideToClose: true
@@ -92,8 +136,7 @@ $scope.UpdateSelectedSummartTemplate = function (position ,summaryTemplates)
     { name: 'Cover Letter', checked: false }
   ];
 
-  $scope.UpdateInformation = function ($infoType) {
-    
+  $scope.UpdateInformation = function (infoType, userdata) {
     //Load Data
     
     $http.get(templateFile).success(function (data) {
@@ -109,6 +152,12 @@ $scope.UpdateSelectedSummartTemplate = function (position ,summaryTemplates)
           resumeTemplate = resumeTemplate.replace(/--JobTitle--/g, $scope.company.jobtitle);
 
       }
+
+      if (infoType == 'SummaryData')
+        resumeTemplate = resumeTemplate.replace(/--SummaryData--/g, userdata);
+      if (infoType == 'ProjectData')
+        resumeTemplate = resumeTemplate.replace(/--ProjectsData--/g, userdata);
+
       $scope.data = {
         text: resumeTemplate
       }
@@ -146,8 +195,8 @@ $scope.UpdateSelectedSummartTemplate = function (position ,summaryTemplates)
 
 
   $scope.settings = [
-    { name: 'Customize Summary', extraScreen: 'Wi-fi menu', icon: 'subject', enabled: true },
-    { name: 'Customize Projects', extraScreen: 'Bluetooth menu', icon: 'subject', enabled: false },
+    { name: 'Customize Summary', extraScreen: 'CustomizeSummaryControls', icon: 'subject', enabled: true },
+    { name: 'Customize Projects', extraScreen: 'CustomizeProjectsControls', icon: 'subject', enabled: false },
   ];
   $scope.messages = [
     { id: 1, title: "Message A", selected: false },
@@ -179,7 +228,12 @@ $scope.UpdateSelectedSummartTemplate = function (position ,summaryTemplates)
     //     .targetEvent(event)
     //   );
     
-    $scope.showAdvanced(event);
+    if (to == "CustomizeSummaryControls")
+      $scope.showCustomizeSummaryControls(event);
+
+    if (to == "CustomizeProjectsControls")
+      $scope.showCustomizeProjectsControls(event);
+
   };
   $scope.doSecondaryAction = function (event) {
     $mdDialog.show(
