@@ -1,0 +1,14 @@
+{
+  "Templates": {
+    "StandardSoftwareDeveloperProjects": {
+      "id":0
+      ,"name": "Standard Software Developer Projects"
+      ,"data":""
+    },
+    "StandardGameDeveloperProjects": {
+      "id":1
+      ,"name": "Standard Game Developer Projects"
+      ,"data":""
+    }
+    }
+  }

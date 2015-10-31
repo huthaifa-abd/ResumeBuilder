@@ -1,4 +1,4 @@
-<md-dialog aria-label="Customize Projects Dialog" ng-cloak ng-controller="AppCtrl2">
+<md-dialog aria-label="Customize Projects Dialog" ng-cloak ng-controller="TemplateCustomizationController">
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -17,9 +17,9 @@
 
             <md-list>
               <md-subheader class="md-no-sticky">Strandard Template List</md-subheader>
-              <md-list-item ng-repeat="Template in summaryTemplates" >
+              <md-list-item ng-repeat="Template in projectsTemplates" >
                 <p> {{ Template.name }} </p>
-                <md-checkbox class="md-secondary" ng-model="Template.checked" ng-change="UpdateSelectedSummartTemplate($index,summaryTemplates)" ></md-checkbox>
+                <md-checkbox class="md-secondary" ng-model="Template.checked" ng-change="UpdateSelectedProjectTemplate($index,projectsTemplates)" ></md-checkbox>
               </md-list-item>
             </md-list>
 

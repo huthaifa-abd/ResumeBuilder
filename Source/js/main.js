@@ -1,3 +1,5 @@
+//Clean Json Templates Using this link http://bernhardhaeussner.de/odd/json-escape/
+
 var app = angular.module('StarterApp', ['xml', 'ngMaterial', 'wysiwyg.module', 'colorpicker.module']);
 
 app.config(function ($mdIconProvider) {
@@ -11,13 +13,14 @@ app.config(function ($mdIconProvider) {
 app.factory('Service', function() {
   var Service = {
     tempSummary: '',
-    tempProjects: ''
+    tempProjects: '',
+    tempHeader:'',
+    tempFooter:''
   };
   return Service;
 });
 
-app.controller('AppCtrl2', function ($scope, $http, $mdSidenav, $mdDialog,Service) {
-  console.log('Controller 02');
+app.controller('TemplateCustomizationController', function ($scope, $http, $mdSidenav, $mdDialog,Service) {
   angular.element(document).ready(function () {
     //Load Tempaltes
     //Load Summary Templates
@@ -27,11 +30,8 @@ app.controller('AppCtrl2', function ($scope, $http, $mdSidenav, $mdDialog,Servic
         $scope.summaryTemplates.push(value);
       });
     });
-
-  });
-  
-  
-  $scope.UpdateSelectedSummartTemplate = function (position, summaryTemplates) {
+    
+    $scope.UpdateSelectedSummartTemplate = function (position, summaryTemplates) {
     angular.forEach(summaryTemplates, function (template, index) {
       if (position != index) {
         template.checked = false;
@@ -41,7 +41,73 @@ app.controller('AppCtrl2', function ($scope, $http, $mdSidenav, $mdDialog,Servic
         Service.tempSummary = summaryTemplates[index].data;
       }
     });
-  }
+  };
+  
+    //Load Project Templates
+     $http.get('templates/ProjectsTemplates.json').success(function (data) {
+      $scope.projectsTemplates = [];
+      angular.forEach(data.Templates, function (value, key) {
+        $scope.projectsTemplates.push(value);
+      });
+    });
+
+  });
+  
+  
+    $scope.UpdateSelectedProjectTemplate = function (position, projectsTemplates) {
+    angular.forEach(projectsTemplates, function (template, index) {
+      if (position != index) {
+        template.checked = false;
+      }
+      else {
+        template.checked = true;
+        Service.tempProjects = projectsTemplates[index].data;
+      }
+    });
+  };
+  
+  
+  
+  //Load Header Templates
+     $http.get('templates/HeaderTemplates.json?id=1').success(function (data) {
+      $scope.headerTemplates = [];
+      angular.forEach(data.Templates, function (value, key) {
+        $scope.headerTemplates.push(value);
+      });
+    });
+
+    $scope.UpdateSelectedHeaderTemplate = function (position, headerTemplates) {
+    angular.forEach(headerTemplates, function (template, index) {
+      if (position != index) {
+        template.checked = false;
+      }
+      else {
+        template.checked = true;
+        Service.tempHeader = headerTemplates[index].data;
+      }
+    });
+  };
+  
+  //Load Footer Templates
+     $http.get('templates/FooterTemplates.json?d=1').success(function (data) {
+      $scope.FooterTemplates = [];
+      angular.forEach(data.Templates, function (value, key) {
+        $scope.FooterTemplates.push(value);
+      });
+    });
+
+    $scope.UpdateSelectedFooterTemplate = function (position, FooterTemplates) {
+    angular.forEach(FooterTemplates, function (template, index) {
+      if (position != index) {
+        template.checked = false;
+      }
+      else {
+        template.checked = true;
+        Service.tempFooter = FooterTemplates[index].data;
+      }
+    });
+  };
+  
   
   
 });
@@ -95,6 +161,38 @@ console.log('ReloadData');
       clickOutsideToClose: true
     })
       .then(function (answer) {
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function () {
+        $scope.status = 'You cancelled the dialog.';
+      });
+  };
+  
+   $scope.showCustomizeHeaderControls = function (ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'customizeheader.tmpl.html?d=1',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    })
+      .then(function (answer) {
+         $scope.UpdateInformation('HeaderData',Service.tempHeader);
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function () {
+        $scope.status = 'You cancelled the dialog.';
+      });
+  };
+  
+  $scope.showCustomizeFooterControls = function (ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'customizefooter.tmpl.html?d=2',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    })
+      .then(function (answer) {
+         $scope.UpdateInformation('FooterData',Service.tempFooter);
         $scope.status = 'You said the information was "' + answer + '".';
       }, function () {
         $scope.status = 'You cancelled the dialog.';
@@ -157,6 +255,10 @@ console.log('ReloadData');
         resumeTemplate = resumeTemplate.replace(/--SummaryData--/g, userdata);
       if (infoType == 'ProjectData')
         resumeTemplate = resumeTemplate.replace(/--ProjectsData--/g, userdata);
+        if (infoType == 'HeaderData')
+        resumeTemplate = resumeTemplate.replace(/--Header--/g, userdata);
+        if (infoType == 'FooterData')
+        resumeTemplate = resumeTemplate.replace(/--Footer--/g, userdata);
 
       $scope.data = {
         text: resumeTemplate
@@ -181,8 +283,8 @@ console.log('ReloadData');
           });
         }
         if (doctype.name == 'Cover Letter') {
-          templateFile = 'templates/covertemplate.txt';
-          $http.get('templates/covertemplate.txt').success(function (data) {
+          templateFile = 'templates/covertemplate.txt?d=1';
+          $http.get('templates/covertemplate.txt?d=1').success(function (data) {
             $scope.data = {
               text: data
             }
@@ -195,8 +297,10 @@ console.log('ReloadData');
 
 
   $scope.settings = [
+    { name: 'Customize Header', extraScreen: 'CustomizeHeaderControls', icon: 'subject', enabled: true },
     { name: 'Customize Summary', extraScreen: 'CustomizeSummaryControls', icon: 'subject', enabled: true },
     { name: 'Customize Projects', extraScreen: 'CustomizeProjectsControls', icon: 'subject', enabled: false },
+    { name: 'Customize Footer', extraScreen: 'CustomizeFooterControls', icon: 'subject', enabled: false },
   ];
   $scope.messages = [
     { id: 1, title: "Message A", selected: false },
@@ -233,6 +337,12 @@ console.log('ReloadData');
 
     if (to == "CustomizeProjectsControls")
       $scope.showCustomizeProjectsControls(event);
+      
+       if (to == "CustomizeHeaderControls")
+      $scope.showCustomizeHeaderControls(event);
+      
+       if (to == "CustomizeFooterControls")
+      $scope.showCustomizeFooterControls(event);
 
   };
   $scope.doSecondaryAction = function (event) {
