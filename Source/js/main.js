@@ -15,7 +15,9 @@ app.factory('Service', function() {
     tempSummary: '',
     tempProjects: '',
     tempHeader:'',
-    tempFooter:''
+    tempFooter:'',
+    tempSkills:'',
+    tempExperinces:''
   };
   return Service;
 });
@@ -24,7 +26,7 @@ app.controller('TemplateCustomizationController', function ($scope, $http, $mdSi
   angular.element(document).ready(function () {
     //Load Tempaltes
     //Load Summary Templates
-    $http.get('templates/SummaryTemplates.json').success(function (data) {
+    $http.get('templates/SummaryTemplates.json?id=2').success(function (data) {
       $scope.summaryTemplates = [];
       angular.forEach(data.Templates, function (value, key) {
         $scope.summaryTemplates.push(value);
@@ -44,7 +46,7 @@ app.controller('TemplateCustomizationController', function ($scope, $http, $mdSi
   };
   
     //Load Project Templates
-     $http.get('templates/ProjectsTemplates.json').success(function (data) {
+     $http.get('templates/ProjectsTemplates.json?d=1').success(function (data) {
       $scope.projectsTemplates = [];
       angular.forEach(data.Templates, function (value, key) {
         $scope.projectsTemplates.push(value);
@@ -55,13 +57,10 @@ app.controller('TemplateCustomizationController', function ($scope, $http, $mdSi
   
   
     $scope.UpdateSelectedProjectTemplate = function (position, projectsTemplates) {
+      Service.tempProjects = "";
     angular.forEach(projectsTemplates, function (template, index) {
-      if (position != index) {
-        template.checked = false;
-      }
-      else {
-        template.checked = true;
-        Service.tempProjects = projectsTemplates[index].data;
+      if (template.checked == true) {
+        Service.tempProjects += projectsTemplates[index].data;
       }
     });
   };
@@ -110,6 +109,50 @@ app.controller('TemplateCustomizationController', function ($scope, $http, $mdSi
   
   
   
+  //Load Skills Templates
+     $http.get('templates/SkillsTemplates.json?d=1').success(function (data) {
+      $scope.SkillsTemplates = [];
+      angular.forEach(data.Templates, function (value, key) {
+        $scope.SkillsTemplates.push(value);
+      });
+    });
+
+    $scope.UpdateSelectedSkillsTemplate = function (position, SkillsTemplates) {
+    angular.forEach(SkillsTemplates, function (template, index) {
+      if (position != index) {
+        template.checked = false;
+      }
+      else {
+        template.checked = true;
+        Service.tempSkills = SkillsTemplates[index].data;
+      }
+    });
+  };
+  
+  
+  //Load Experinces Templates
+     $http.get('templates/ExperincesTemplates.json?d=1').success(function (data) {
+      $scope.ExperincesTemplates = [];
+      angular.forEach(data.Templates, function (value, key) {
+        $scope.ExperincesTemplates.push(value);
+      });
+    });
+
+    $scope.UpdateSelectedExperincesTemplate = function (position, ExperincesTemplates) {
+    angular.forEach(ExperincesTemplates, function (template, index) {
+      if (position != index) {
+        template.checked = false;
+      }
+      else {
+        template.checked = true;
+        Service.tempExperinces = ExperincesTemplates[index].data;
+      }
+    });
+  };
+  
+  
+  
+  
 });
 app.controller('AppCtrl', function ($scope, $http, $mdSidenav, $mdDialog,Service) {
   var templateFile = '';
@@ -145,7 +188,7 @@ console.log('ReloadData');
       clickOutsideToClose: true
     })
       .then(function (answer) {
-        $scope.UpdateInformation('SummaryData',Service.tempSummary);
+        $scope.UpdateInformation();
         $scope.status = 'You said the information was "' + answer + '".';
       }, function () {
         $scope.status = 'You cancelled the dialog.';
@@ -155,12 +198,13 @@ console.log('ReloadData');
   $scope.showCustomizeProjectsControls = function (ev) {
     $mdDialog.show({
       controller: DialogController,
-      templateUrl: 'customizeprojects.tmpl.html?d=1',
+      templateUrl: 'customizeprojects.tmpl.html?d=2',
       parent: angular.element(document.body),
       targetEvent: ev,
       clickOutsideToClose: true
     })
       .then(function (answer) {
+        $scope.UpdateInformation();
         $scope.status = 'You said the information was "' + answer + '".';
       }, function () {
         $scope.status = 'You cancelled the dialog.';
@@ -176,7 +220,7 @@ console.log('ReloadData');
       clickOutsideToClose: true
     })
       .then(function (answer) {
-         $scope.UpdateInformation('HeaderData',Service.tempHeader);
+         $scope.UpdateInformation();
         $scope.status = 'You said the information was "' + answer + '".';
       }, function () {
         $scope.status = 'You cancelled the dialog.';
@@ -192,7 +236,39 @@ console.log('ReloadData');
       clickOutsideToClose: true
     })
       .then(function (answer) {
-         $scope.UpdateInformation('FooterData',Service.tempFooter);
+         $scope.UpdateInformation();
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function () {
+        $scope.status = 'You cancelled the dialog.';
+      });
+  };
+  
+    $scope.showCustomizeSkillsControls = function (ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'customizeskills.tmpl.html?d=2',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    })
+      .then(function (answer) {
+         $scope.UpdateInformation();
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function () {
+        $scope.status = 'You cancelled the dialog.';
+      });
+  };
+  
+    $scope.showCustomizeExperinceControls = function (ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'customizeexperince.tmpl.html?d=2',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    })
+      .then(function (answer) {
+         $scope.UpdateInformation();
         $scope.status = 'You said the information was "' + answer + '".';
       }, function () {
         $scope.status = 'You cancelled the dialog.';
@@ -234,7 +310,7 @@ console.log('ReloadData');
     { name: 'Cover Letter', checked: false }
   ];
 
-  $scope.UpdateInformation = function (infoType, userdata) {
+  $scope.UpdateInformation = function () {
     //Load Data
     
     $http.get(templateFile).success(function (data) {
@@ -251,14 +327,14 @@ console.log('ReloadData');
 
       }
 
-      if (infoType == 'SummaryData')
-        resumeTemplate = resumeTemplate.replace(/--SummaryData--/g, userdata);
-      if (infoType == 'ProjectData')
-        resumeTemplate = resumeTemplate.replace(/--ProjectsData--/g, userdata);
-        if (infoType == 'HeaderData')
-        resumeTemplate = resumeTemplate.replace(/--Header--/g, userdata);
-        if (infoType == 'FooterData')
-        resumeTemplate = resumeTemplate.replace(/--Footer--/g, userdata);
+      //Update information
+        resumeTemplate = resumeTemplate.replace(/--SummaryData--/g, Service.tempSummary);
+        resumeTemplate = resumeTemplate.replace(/--ProjectsData--/g, Service.tempProjects);
+        resumeTemplate = resumeTemplate.replace(/--Header--/g, Service.tempHeader);
+        resumeTemplate = resumeTemplate.replace(/--Footer--/g, Service.tempFooter);
+        resumeTemplate = resumeTemplate.replace(/--Skills--/g, Service.tempSkills);
+        resumeTemplate = resumeTemplate.replace(/--Experinces--/g, Service.tempExperinces);
+        resumeTemplate = resumeTemplate.replace(/--CurrentDate--/g, new Date().toDateString() );
 
       $scope.data = {
         text: resumeTemplate
@@ -274,8 +350,8 @@ console.log('ReloadData');
       else {
         doctype.checked = true;
         if (doctype.name == 'Resume') {
-          templateFile = 'templates/resumetemplate.txt';
-          $http.get('templates/resumetemplate.txt').success(function (data) {
+          templateFile = 'templates/resumetemplate.txt?d=1';
+          $http.get('templates/resumetemplate.txt?d=1').success(function (data) {
             $scope.data = {
               text: data
             }
@@ -301,6 +377,8 @@ console.log('ReloadData');
     { name: 'Customize Summary', extraScreen: 'CustomizeSummaryControls', icon: 'subject', enabled: true },
     { name: 'Customize Projects', extraScreen: 'CustomizeProjectsControls', icon: 'subject', enabled: false },
     { name: 'Customize Footer', extraScreen: 'CustomizeFooterControls', icon: 'subject', enabled: false },
+    { name: 'Customize Skills', extraScreen: 'CustomizeSkillsControls', icon: 'subject', enabled: false },
+    { name: 'Customize Experince', extraScreen: 'CustomizeExperinceControls', icon: 'subject', enabled: false },
   ];
   $scope.messages = [
     { id: 1, title: "Message A", selected: false },
@@ -343,6 +421,12 @@ console.log('ReloadData');
       
        if (to == "CustomizeFooterControls")
       $scope.showCustomizeFooterControls(event);
+      
+       if (to == "CustomizeSkillsControls")
+      $scope.showCustomizeSkillsControls(event);
+      
+       if (to == "CustomizeExperinceControls")
+      $scope.showCustomizeExperinceControls(event);
 
   };
   $scope.doSecondaryAction = function (event) {

@@ -1,13 +1,13 @@
 {
   "Templates": {
-    "StandardSoftwareDeveloperHeader": {
+    "[Cover]SoftwareDeveloperHeader": {
       "id":0
-      ,"name": "Standard Software Developer Header"
+      ,"name": "[Cover] Software Developer Header"
       ,"data":""
     },
-    "StandardGameDeveloperHeader": {
+    "[Cover]GameDeveloperHeader": {
       "id":1
-      ,"name": "Standard Game Developer Header"
+      ,"name": "[Cover] Game Developer Header"
       ,"data":"<p dir=\"ltr\" style=\"line-height:1.2;margin-top:0pt;margin-bottom:0pt;\"><span style=\"font-size:12px;font-family:Arial;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;\">Greetings</span></p><br><p dir=\"ltr\" style=\"line-height:1.44;margin-top:0pt;margin-bottom:0pt;\"><span style=\"font-size:12px;font-family:Arial;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;\">I am very passionate game developer and really interested in offered position , My attached resume outlines that I could be a valuable asset to your organization. Here's the overview:</span></p>"
     }
     }

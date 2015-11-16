@@ -1,8 +1,8 @@
-<md-dialog aria-label="Customize Footer Dialog" ng-cloak ng-controller="TemplateCustomizationController">
+<md-dialog aria-label="Customize Skills Dialog" ng-cloak ng-controller="TemplateCustomizationController">
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Customize Footer Dialog</h2>
+        <h2>Customize Skills Dialog</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
           <md-icon aria-label="Close dialog"></md-icon>
@@ -13,13 +13,13 @@
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Templates">
           <md-content class="md-padding">
-            <p>Use standard templates to quickly tailor your custom Footer using predefined information.</p>
+            <p>Use standard templates to quickly tailor your custom Skills using predefined information.</p>
 
             <md-list>
               <md-subheader class="md-no-sticky">Strandard Template List</md-subheader>
-              <md-list-item ng-repeat="Template in FooterTemplates" >
+              <md-list-item ng-repeat="Template in SkillsTemplates" >
                 <p> {{ Template.name }} </p>
-                <md-checkbox class="md-secondary" ng-model="Template.checked" ng-change="UpdateSelectedFooterTemplate($index,FooterTemplates)" ></md-checkbox>
+                <md-checkbox class="md-secondary" ng-model="Template.checked" ng-change="UpdateSelectedSkillsTemplate($index,SkillsTemplates)" ></md-checkbox>
               </md-list-item>
             </md-list>
 
